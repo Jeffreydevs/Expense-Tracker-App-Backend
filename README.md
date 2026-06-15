@@ -2,6 +2,10 @@
 
 Backend API for an expense tracker app built with Node.js, Express, MongoDB, and Mongoose.
 
+## Live API
+
+https://spendifi-backend.onrender.com/
+
 ## Features
 
 - Create expenses
