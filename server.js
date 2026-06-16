@@ -17,26 +17,28 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/expenses", authMiddleware, async (req, res) => {
-  const expenses = await Expense.find();  
+  const expenses = await Expense.find({ userId: req.user.userId });  
   res.json(expenses);
 });
 
 app.post("/api/expenses", authMiddleware, async (req, res) => {
   console.log("POST route hit");
   console.log(req.body);  
-  const expense = await Expense.create(req.body);
+  const expense = await Expense.create({...req.body, userId: req.user.userId });
   res.json(expense);
 });
 
 app.delete("/api/expenses/:id", authMiddleware, async (req, res) => {
-  await Expense.findByIdAndDelete(req.params.id);
+  const expense = await Expense.findOneAndDelete({_id: req.params.id, userId: req.user.userId });
+  if (!expense) { return res.status(404).json({ message: "Expense not found or not authorized" });}
   res.json({
     message: "Expense deleted",
   });
 });
 
 app.put("/api/expenses/:id", authMiddleware, async (req, res) => {
-  const updatedExpense = await Expense.findByIdAndUpdate( req.params.id, req.body, { new: true } );
+  const updatedExpense = await Expense.findOneAndUpdate({_id: req.params.id, userId: req.user.userId },req.body, { new: true });
+  if (!updatedExpense) {return res.status(404).json({ message: "Expense not found or not authorized"});}
   res.json(updatedExpense);
 });
 
