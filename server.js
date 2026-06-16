@@ -1,12 +1,15 @@
 require("dotenv").config();
 require("./db");
+const authRoutes = require("./routes/authRoutes");
 const express = require("express");
 const Expense = require("./models/Expense");
 const cors = require("cors")
 
+
 const app = express();
 app.use(cors())
 app.use(express.json());
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello Jeffrey");
