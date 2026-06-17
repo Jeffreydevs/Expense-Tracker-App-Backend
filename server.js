@@ -13,7 +13,9 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Hello Jeffrey");
+  res.json({
+    message: "Spendifi Backend API is running"
+  });
 });
 
 app.get("/api/expenses", authMiddleware, async (req, res) => {
